@@ -174,7 +174,7 @@ class DiscordServerMember:
             if member.id == id_or_name:
                 return member
         for member in discord_server_members:
-            if member.get_name().lower() == id_or_name.lower() or member.get_user().displayname == id_or_name.lower():
+            if member.get_name().lower() == str(id_or_name).lower() or member.get_user().displayname == id_or_name.lower():
                 return member
             
     @staticmethod
