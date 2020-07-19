@@ -315,11 +315,29 @@ async def process_command(message, arguments):
                 embed_response = member_profile_embed
             except:
                 text_response = "No user found."
+    elif arguments.lower() == "leaderboard":
+        top = []
+        members = discord_server_members
+        while len(top) < 11:
+            member_with_most_points = None
+            for member in members:
+                if member_with_most_points is None or member.get_points() > member_with_most_points.get_points():
+                    member_with_most_points = member
+            top.append(member_with_most_points)
+            members.remove(member_with_most_points)
+
+        leaderboard_embed = discord.Embed(title="Leaderboard", description="KnightBot points leaderboard.", color=0xff0000)
+        for i in range(len(top)):
+            member = top[i]
+            leaderboard_embed.add_field(name=f"#{i + 1} - {member.get_name()}", value=f"{str(member.get_points())} points", inline=False)
+        embed_response = leaderboard_embed
     else:
         commands = {
             "/socials": "Lists LifeKnight's accounts.",
             "/mods": "Lists LifeKnight's mods.",
-            "/resourcepacks": "Lists LifeKnight's resource packs."
+            "/resourcepacks": "Lists LifeKnight's resource packs.",
+            "/profile [user]": "Returns the KnightBot profile of the user.",
+            "/leaderboard": "Displays the KnightBot-point leaderboard.",
         }
         commands_embed = discord.Embed(title="Commands", description="Commands for this bot.", color=0xff0000)
         for i in commands:
