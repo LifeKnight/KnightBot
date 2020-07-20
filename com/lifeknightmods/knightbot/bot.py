@@ -1,12 +1,10 @@
-import asyncio
 import json
 import os
+import random
 import sys
 import time
 import urllib.request
-import schedule
-import threading
-import random
+from googleapiclient.discovery import build
 
 import discord
 from dotenv import load_dotenv
@@ -116,6 +114,46 @@ class Utilities:
             await on_error("An error occurred while trying to write to the configuration file.")
 
     @staticmethod
+    async def get_random_stream():
+        developer_key = 'AIzaSyA-dBiqrzPhCbkiWQCtWh2T-UYkcil05ds'
+        youtube_api_service_name = 'youtube'
+        youtube_api_version = 'v3'
+
+        youtube = build(youtube_api_service_name, youtube_api_version,
+                        developerKey=developer_key)
+
+        search_response = youtube.search().list(
+            part="snippet",
+            eventType="live",
+            maxResults=25,
+            order="viewCount",
+            q="hypixel,/p join,/party join",
+            type="video"
+        ).execute()
+
+        videos = search_response["items"]
+
+        video = videos[random.randint(0, len(videos) - 1)]
+
+        video_statistics = youtube.videos().list(
+            part="statistics",
+            id=video["id"]["videoId"]
+        ).execute()
+
+        video_embed = discord.Embed(title="Random Stream - " + video["snippet"]["title"],
+                                    description=video["snippet"]["channelTitle"], color=0xff0000)
+
+        video_embed.add_field(name="Link", value="https://www.youtube.com/watch?v=" + video["id"]["videoId"],
+                              inline=False)
+        video_embed.add_field(name="Description", value=video["snippet"]["description"], inline=False)
+        video_embed.add_field(name="Viewers", value=video_statistics["items"][0]["statistics"]["viewCount"], inline=False)
+        video_embed.add_field(name="Likes", value=video_statistics["items"][0]["statistics"]["likeCount"], inline=False)
+
+        video_embed.set_thumbnail(url=video["snippet"]["thumbnails"]["high"]["url"])
+
+        return video_embed
+
+    @staticmethod
     async def exit_bot():
         await Utilities.update_configuration_file()
         sys.exit(0)
@@ -174,9 +212,10 @@ class DiscordServerMember:
             if member.id == id_or_name:
                 return member
         for member in discord_server_members:
-            if member.get_name().lower() == str(id_or_name).lower() or member.get_user().displayname == id_or_name.lower():
+            if member.get_name().lower() == str(
+                    id_or_name).lower() or member.get_user().displayname == id_or_name.lower():
                 return member
-            
+
     @staticmethod
     def add_points_by_id(id_in, points):
         DiscordServerMember.get_by_id_or_name(id_in).points += points
@@ -309,8 +348,9 @@ async def process_command(message, arguments):
                     member_id_or_name = int(member_id_or_name)
 
                 member = DiscordServerMember.get_by_id_or_name(member_id_or_name)
-                member_profile_embed = discord.Embed(title=member.get_name(), description=f"<@{member.get_id()}>'s KnightBot profile.",
-                                                 color=0xff0000)
+                member_profile_embed = discord.Embed(title=member.get_name(),
+                                                     description=f"<@{member.get_id()}>'s KnightBot profile.",
+                                                     color=0xff0000)
                 member_profile_embed.add_field(name="Points", value=str(member.get_points()), inline=True)
                 embed_response = member_profile_embed
             except:
@@ -326,11 +366,19 @@ async def process_command(message, arguments):
             top.append(member_with_most_points)
             members.remove(member_with_most_points)
 
-        leaderboard_embed = discord.Embed(title="Leaderboard", description="KnightBot points leaderboard.", color=0xff0000)
+        leaderboard_embed = discord.Embed(title="Leaderboard", description="KnightBot points leaderboard.",
+                                          color=0xff0000)
         for i in range(len(top)):
             member = top[i]
-            leaderboard_embed.add_field(name=f"#{i + 1} - {member.get_name()}", value=f"{str(member.get_points())} points", inline=False)
+            leaderboard_embed.add_field(name=f"#{i + 1} - {member.get_name()}",
+                                        value=f"{str(member.get_points())} points", inline=False)
         embed_response = leaderboard_embed
+    elif arguments.lower().replace(" ", "") == "randomstreamer" or arguments.lower() == "streamer":
+        try:
+            embed_response = await Utilities.get_random_stream()
+        except:
+            text_response = "An error occured. Please try again."
+            await on_error("Error while fetching random streamer.")
     else:
         commands = {
             "/socials": "Lists LifeKnight's accounts.",
@@ -338,6 +386,7 @@ async def process_command(message, arguments):
             "/resourcepacks": "Lists LifeKnight's resource packs.",
             "/profile [user]": "Returns the KnightBot profile of the user.",
             "/leaderboard": "Displays the KnightBot-point leaderboard.",
+            "/randomstreamer": "Returns a random streamer.",
         }
         commands_embed = discord.Embed(title="Commands", description="Commands for this bot.", color=0xff0000)
         for i in commands:
