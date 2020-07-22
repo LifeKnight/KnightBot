@@ -5,6 +5,31 @@ import time
 import discord
 from googleapiclient.discovery import build
 
+import bot_commands
+from member_utilities import add_points_by_id, get_member_with_most_points, discord_server_members
+
+CLIENT = None
+
+english_word_list = []
+last_question_time = 0
+last_question_response = None
+
+
+def set_client(client_in):
+    global CLIENT
+    CLIENT = client_in
+
+
+async def on_message(message):
+    if message.channel._id == get_knightbot_response_channel()._id:
+        await process_response(message)
+
+    elif len(message.content) > 1 and message.content[0] == '/':
+        await bot_commands.process_command(message, message.content[1:])
+
+    if last_question_time == 0 or last_question_time - get_current_time_millis() < -15 * 60 * 1000:
+        await send_question()
+
 
 def get_current_time_millis():
     return int(round(time.time() * 1000))
@@ -73,3 +98,61 @@ async def get_random_stream():
 def get_current_time_string():
     now = datetime.datetime.now()
     return now.strftime("%m/%d/%y %H:%M:%S")
+
+
+def get_guild():
+    return discord.utils.get(CLIENT.guilds, id=366700898602188811)
+
+
+def get_knightbot_channel():
+    return discord.utils.get(get_guild().channels, id=734409425430773850)
+
+
+def get_knightbot_response_channel():
+    return discord.utils.get(get_guild().channels, id=734413328075587644)
+
+
+def get_pointest_role():
+    for role in get_guild().roles:
+        if role._id == 734507294980571258:
+            return role
+
+
+async def send_question():
+    global english_word_list
+    random_word = english_word_list[random.randint(0, len(english_word_list) - 1)]
+    global last_question_response
+    last_question_response = random_word
+    scrambled = scramble_word(random_word)
+    await get_knightbot_channel().send(
+        f"Unscramble the message to receive points! **{scrambled}**")
+    print(f"Scrambled word: {random_word}")
+    global last_question_time
+    last_question_time = get_current_time_millis()
+
+
+async def process_response(message):
+    if message.content.lower() == last_question_response:
+        random_points = random.randint(1, 3)
+        if random_points == 1:
+            point_message = "You received **1 point!**"
+        else:
+            point_message = f"You received **{random_points} points!**"
+        add_points_by_id(message.author._id, random_points)
+        await get_knightbot_response_channel().send(f"Nice <@{message.author._id}>! {point_message}")
+
+        top_member_id = get_member_with_most_points().get_id()
+        for member in discord_server_members:
+            if member.has_user():
+                user = member.get_user()
+                if user.roles.__contains__(get_pointest_role()) and user._id != top_member_id:
+                    await user.remove_roles(get_pointest_role())
+                elif not user.roles.__contains__(get_pointest_role()) and user._id == top_member_id:
+                    await user.add_roles(get_pointest_role())
+                    await get_knightbot_response_channel().send(f"Congratulations! You are now the "
+                                                                              f"POINTEST!")
+
+        await send_question()
+        return
+
+
