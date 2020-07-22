@@ -1,7 +1,8 @@
 import discord
 
-
 CLIENT = None
+
+discord_server_members = []
 
 
 def set_client(client_in):
@@ -11,36 +12,34 @@ def set_client(client_in):
 
 class DiscordServerMember:
     def __init__(self, id_in, points_in):
-        self._id = id_in
-        self._points = points_in
-        if self._points is None:
-            self._points = 0
+        self.id = id_in
+        self.points = points_in
+        if self.points is None:
+            self.points = 0
 
         for member in get_guild().members:
-            if member.id == self._id:
+            if member.id == self.id:
                 self.user = member
                 break
         discord_server_members.append(self)
 
-    @property
     def get_user(self):
         return self.user
 
-    @property
     def has_user(self):
-        return any([member.id == self._id for member in get_guild().members])
+        return any([member.id == self.id for member in get_guild().members])
 
-    @property
-    def get_id(self):
-        return self._id
+    def get_member_id(self):
+        return self.id
 
-    @property
     def get_name(self):
         return self.user.name
 
-    @property
     def get_points(self):
-        return self._points
+        return self.points
+
+    def add_to_points(self, points):
+        self.points += points
 
 
 def has_member(id_in):
@@ -70,7 +69,7 @@ def get_by_id_or_name(id_or_name):
 
 
 def add_points_by_id(id_in, points):
-    get_by_id_or_name(id_in).points += points
+    get_by_id_or_name(id_in).add_to_points(points)
 
 
 def get_member_with_most_points():
@@ -84,12 +83,11 @@ def get_member_with_most_points():
 def get_members_as_tuple():
     members = []
     for member in discord_server_members:
-        members.append({"id": member.id, "points": member.points})
+        member_id = member.get_member_id()
+        member_points = member.get_points()
+        members.append({"id": member_id, "points": member_points})
     return members
 
 
 def get_guild():
     return discord.utils.get(CLIENT.guilds, id=366700898602188811)
-
-
-discord_server_members = []

@@ -21,7 +21,7 @@ def set_client(client_in):
 
 
 async def on_message(message):
-    if message.channel._id == get_knightbot_response_channel()._id:
+    if message.channel.id == get_knightbot_response_channel().id:
         await process_response(message)
 
     elif len(message.content) > 1 and message.content[0] == '/':
@@ -114,21 +114,47 @@ def get_knightbot_response_channel():
 
 def get_pointest_role():
     for role in get_guild().roles:
-        if role._id == 734507294980571258:
+        if role.id == 734507294980571258:
             return role
 
 
 async def send_question():
-    global english_word_list
-    random_word = english_word_list[random.randint(0, len(english_word_list) - 1)]
+    random_integer = random.randint(0, 1)
     global last_question_response
-    last_question_response = random_word
-    scrambled = scramble_word(random_word)
-    await get_knightbot_channel().send(
-        f"Unscramble the message to receive points! **{scrambled}**")
-    print(f"Scrambled word: {random_word}")
+
+    if random_integer == 0:
+        global english_word_list
+        random_word = english_word_list[random.randint(0, len(english_word_list) - 1)]
+        last_question_response = random_word
+        scrambled = scramble_word(random_word)
+        await get_knightbot_channel().send(
+            f"Unscramble the message to receive points! **{scrambled}**")
+    else:
+        random_integer_2 = random.randint(0, 3)
+        if random_integer_2 == 0:
+            operation = '+'
+            num1 = random.randint(50, 500)
+            num2 = random.randint(50, 500)
+            last_question_response = str(num1 + num2)
+        elif random_integer_2 == 1:
+            operation = '-'
+            num1 = random.randint(50, 500)
+            num2 = random.randint(50, 500)
+            last_question_response = str(num1 - num2)
+        elif random_integer_2 == 2:
+            operation = '*'
+            num1 = random.randint(1, 10)
+            num2 = random.randint(11, 25)
+            last_question_response = str(num1 * num2)
+        else:
+            operation = '//'
+            num1 = random.randint(50, 500)
+            num2 = random.randint(2, 9)
+            last_question_response = str(num1 // num2)
+        await get_knightbot_channel().send(f"Simplify this expression to receive points! **{num1} {operation} {num2}**")
     global last_question_time
     last_question_time = get_current_time_millis()
+    print(f"Answer: {last_question_response}")
 
 
 async def process_response(message):
@@ -138,21 +164,19 @@ async def process_response(message):
             point_message = "You received **1 point!**"
         else:
             point_message = f"You received **{random_points} points!**"
-        add_points_by_id(message.author._id, random_points)
-        await get_knightbot_response_channel().send(f"Nice <@{message.author._id}>! {point_message}")
+        add_points_by_id(message.author.id, random_points)
+        await get_knightbot_response_channel().send(f"Nice <@{message.author.id}>! {point_message}")
 
-        top_member_id = get_member_with_most_points().get_id()
+        top_member_id = get_member_with_most_points().get_member_id()
         for member in discord_server_members:
             if member.has_user():
                 user = member.get_user()
-                if user.roles.__contains__(get_pointest_role()) and user._id != top_member_id:
+                if user.roles.__contains__(get_pointest_role()) and user.id != top_member_id:
                     await user.remove_roles(get_pointest_role())
-                elif not user.roles.__contains__(get_pointest_role()) and user._id == top_member_id:
+                elif not user.roles.__contains__(get_pointest_role()) and user.id == top_member_id:
                     await user.add_roles(get_pointest_role())
                     await get_knightbot_response_channel().send(f"Congratulations! You are now the "
-                                                                              f"POINTEST!")
+                                                                f"POINTEST!")
 
         await send_question()
         return
-
-

@@ -22,16 +22,18 @@ prefix = '/'
 
 
 last_config_read_time = 0
-discord_server_members = []
 
 
 async def read_configuration_file():
-    with open("configuration.txt", 'r') as file:
-        content = file.read()
-        data_map = json.loads(content)
-        global last_config_read_time
-        last_config_read_time = data_map["time"]
-        read_members_from_tuple(data_map["members"])
+    try:
+        with open("configuration.txt", 'r') as file:
+            content = file.read()
+            data_map = json.loads(content)
+            global last_config_read_time
+            last_config_read_time = data_map["time"]
+            read_members_from_tuple(data_map["members"])
+    except Exception as e:
+        await on_error("An error occurred while trying to parse the contents of the configuration file.", e.args)
 
 
 async def update_configuration_file():
@@ -74,7 +76,7 @@ async def on_ready():
     member_utilities.set_client(CLIENT)
     print(
         f'{CLIENT.user} is connected to the following guild:\n'
-        f'{bot_utilities.get_guild().name} (id: {bot_utilities.get_guild()._id})'
+        f'{bot_utilities.get_guild().name} (id: {bot_utilities.get_guild().id})'
     )
     await on_startup()
     await send_question()
@@ -83,7 +85,7 @@ async def on_ready():
 @CLIENT.event
 async def on_member_join(member):
     memberlog_channel = discord.utils.get(get_guild().channels, id=502619633061462036)
-    await memberlog_channel.send(f'Welcome to LifeKnight\'s Discord <@{member._id}>! Please read <#451127347626639361> '
+    await memberlog_channel.send(f'Welcome to LifeKnight\'s Discord <@{member.id}>! Please read <#451127347626639361> '
                                  f'and <#465206340730617866> before doing anything!')
     check_for_member_updates()
 

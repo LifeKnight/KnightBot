@@ -1,17 +1,18 @@
 import discord
 import abc
 
-from member_utilities import get_by_id_or_name
+import bot_utilities
+from member_utilities import get_by_id_or_name, discord_server_members
 
-commands = []
+command_objects = []
 
 
-def dummy():
+def dummy(arguments):
     return "dummy"
 
 
 class Command:
-    def __init__(self, name, aliases):
+    def __init__(self, name, aliases, response=dummy):
         self.name = name
         self.aliases = aliases
         self.response = response
@@ -23,6 +24,20 @@ class Command:
     @abc.abstractmethod
     def process_command(self, arguments):
         return
+
+
+def social_command(arguments):
+    socials = {
+        "YouTube": "https://www.youtube.com/channel/UCGfAdb9d2c7X_5JffTz9hGQ",
+        "YouTube (2)": "https://www.youtube.com/channel/UCkQN_DV0aOKwpSmFSJ-xrxw",
+        "YouTube (3)": "https://www.youtube.com/channel/UC6tKelwMuyKuHtOHIwBOJag",
+        "Twitter": "https://twitter.com/__LifeKnight",
+        "Fiverr": "https://www.fiverr.com/share/gvKN4E",
+    }
+    socials_embed = discord.Embed(title="Socials", description="LifeKnight's social accounts.", color=0xff0000)
+    for i in socials:
+        socials_embed.add_field(name=i, value=socials[i], inline=False)
+    embed_response = socials_embed
 
 
 def create_commands():
@@ -72,7 +87,7 @@ async def process_command(message, arguments):
         if len(arguments.replace(" ", "")) == 7:
             member_profile_embed = discord.Embed(title=f"{message.author.name}", description="Your KnightBot profile.",
                                                  color=0xff0000)
-            member = get_by_id_or_name(message.author._id)
+            member = get_by_id_or_name(message.author.id)
             member_profile_embed.add_field(name="Points", value=str(member.get_points()), inline=True)
             embed_response = member_profile_embed
         else:
@@ -85,7 +100,7 @@ async def process_command(message, arguments):
 
                 member = get_by_id_or_name(member_id_or_name)
                 member_profile_embed = discord.Embed(title=member.get_name(),
-                                                     description=f"<@{member.get_id()}>'s KnightBot profile.",
+                                                     description=f"<@{member.get_member_id()}>'s KnightBot profile.",
                                                      color=0xff0000)
                 member_profile_embed.add_field(name="Points", value=str(member.get_points()), inline=True)
                 embed_response = member_profile_embed
@@ -113,8 +128,7 @@ async def process_command(message, arguments):
         try:
             embed_response = await bot_utilities.get_random_stream()
         except:
-            text_response = "An error occured. Please try again."
-            await on_error("Error while fetching random streamer.")
+            text_response = "An error occurred. Please try again."
     else:
         commands = {
             "/socials": "Lists LifeKnight's accounts.",
