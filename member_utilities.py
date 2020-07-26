@@ -16,15 +16,12 @@ class DiscordServerMember:
         self.points = points_in
         if self.points is None:
             self.points = 0
-
-        for member in get_guild().members:
-            if member.id == self.id:
-                self.user = member
-                break
         discord_server_members.append(self)
 
     def get_user(self):
-        return self.user
+        for member in get_guild().members:
+            if member.id == self.id:
+                return member
 
     def has_user(self):
         return any([member.id == self.id for member in get_guild().members])
@@ -33,7 +30,7 @@ class DiscordServerMember:
         return self.id
 
     def get_name(self):
-        return self.user.name
+        return self.get_user().name
 
     def get_points(self):
         return self.points

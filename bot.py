@@ -6,7 +6,6 @@ import urllib.request
 import discord
 from dotenv import load_dotenv
 
-import bot_commands
 import bot_utilities
 import member_utilities
 from bot_utilities import send_question, get_current_time_millis, process_response
@@ -84,7 +83,7 @@ async def on_ready():
 
 @CLIENT.event
 async def on_member_join(member):
-    memberlog_channel = discord.utils.get(get_guild().channels, id=502619633061462036)
+    memberlog_channel = discord.utils.get(bot_utilities.get_guild().channels, id=502619633061462036)
     await memberlog_channel.send(f'Welcome to LifeKnight\'s Discord <@{member.id}>! Please read <#451127347626639361> '
                                  f'and <#465206340730617866> before doing anything!')
     check_for_member_updates()
@@ -92,8 +91,8 @@ async def on_member_join(member):
 
 @CLIENT.event
 async def on_member_remove(member):
-    memberlog_channel = discord.utils.get(get_guild().channels, id=502619633061462036)
-    await memberlog_channel.send(f'Farewell **{member.user}!**')
+    memberlog_channel = discord.utils.get(bot_utilities.get_guild().channels, id=502619633061462036)
+    await memberlog_channel.send(f'Farewell **{member.name}#{member.discriminator}!**')
 
 
 @CLIENT.event

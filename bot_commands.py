@@ -56,7 +56,7 @@ async def resource_packs_command(channel):
 
 
 async def profile_command(message, arguments):
-    if len(arguments.replace(" ", "")) <= 7:
+    if not arguments.__contains__(" "):
         member_profile_embed = discord.Embed(title=f"{message.author.name}", description="Your KnightBot profile.",
                                              color=0xff0000)
         member = get_by_id_or_name(message.author.id)
@@ -78,6 +78,7 @@ async def profile_command(message, arguments):
             await message.channel.send(embed=member_profile_embed)
         except:
             await message.channel.send("No user found.")
+            raise Exception(f"No user found for arguments: {arguments}")
 
 
 async def leaderboard_command(channel):
