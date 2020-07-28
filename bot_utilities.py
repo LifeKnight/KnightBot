@@ -143,13 +143,13 @@ async def send_question():
             last_question_response = str(num1 - num2)
         elif random_integer_2 == 2:
             operation = '*'
-            num1 = random.randint(1, 10)
+            num1 = random.randint(7, 20)
             num2 = random.randint(11, 25)
             last_question_response = str(num1 * num2)
         else:
             operation = '//'
             num1 = random.randint(50, 500)
-            num2 = random.randint(2, 9)
+            num2 = random.randint(7, 15)
             last_question_response = str(num1 // num2)
         await get_knightbot_channel().send(f"Simplify this expression to receive points! **{num1} {operation} {num2}**")
     global last_question_time
