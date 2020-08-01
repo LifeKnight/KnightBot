@@ -69,3 +69,4 @@ There was an error: Error while fetching random streamer. - () - {}
 [07/22/20 17:08:43] There was an error: An error occurred while trying to parse the contents of the configuration file. - (('Expecting value: line 1 column 1 (char 0)',),) - {}
 [07/22/20 17:15:06] There was an error: An error occurred while trying to parse the contents of the configuration file. - (('Expecting value: line 1 column 1 (char 0)',),) - {}
 [07/22/20 17:47:08] There was an error: An error occurred while trying to parse the contents of the configuration file. - (('Expecting value: line 1 column 1 (char 0)',),) - {}
+[07/30/20 09:21:40] There was an error: An error occurred while trying to parse the contents of the configuration file. - (('Expecting value: line 1 column 1 (char 0)',),) - {}

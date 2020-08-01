@@ -82,7 +82,10 @@ def get_members_as_tuple():
     for member in discord_server_members:
         member_id = member.get_member_id()
         member_points = member.get_points()
-        members.append({"id": member_id, "points": member_points, "name": member.name, "displayName": member.display_name})
+        members.append({
+            "id": member_id,
+            "points": member_points,
+            "name": member.get_name() if member.has_user() else "None"})
     return members
 
 
