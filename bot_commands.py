@@ -42,6 +42,8 @@ async def mods_command(channel):
 
 async def resource_packs_command(channel):
     resource_packs = {
+        "High Resolution Sword": "http://www.mediafire.com/file/8wk87k5ii4sqwry/%25C2%25A78%2521__%25C2%25A77Kiro_"
+                                 "%25C2%25A73Faith_%25C2%25A78Revamp.zip/file",
         "16x Swords, 128x Blocks": "http://www.mediafire.com/file/v20bu2xzzgtyzlf/A_Simple_PvP_Experience%2521_"
                                    "%255BRed_Diamond_Edit%255D.zip/file",
         "Default Red Edit": "http://www.mediafire.com/file/teb5n3f78d8orqo/Default_Texture_Pack_%255BRed_Edit%255D"
@@ -65,14 +67,16 @@ async def profile_command(message, arguments):
     else:
         try:
             member_id_or_name = arguments.split(" ")[1]
-            if member_id_or_name.startswith("<@"):
+            if member_id_or_name.startswith("<@!"):
+                member_id_or_name = int(member_id_or_name[3:len(member_id_or_name) - 1])
+            elif member_id_or_name.startswith("<@"):
                 member_id_or_name = int(member_id_or_name[2:len(member_id_or_name) - 1])
             elif member_id_or_name.isnumeric():
                 member_id_or_name = int(member_id_or_name)
 
             member = get_by_id_or_name(member_id_or_name)
-            member_profile_embed = discord.Embed(title=member.get_name(),
-                                                 description=f"<@{member.get_member_id()}>'s KnightBot profile.",
+            member_profile_embed = discord.Embed(title=member.get_name() if member.has_user() else member_id_or_name,
+                                                 description=f"<@!{member.get_member_id()}>'s KnightBot profile.",
                                                  color=0xff0000)
             member_profile_embed.add_field(name="Points", value=str(member.get_points()), inline=True)
             await message.channel.send(embed=member_profile_embed)

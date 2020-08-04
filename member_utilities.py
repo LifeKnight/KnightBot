@@ -59,7 +59,7 @@ def get_by_id_or_name(id_or_name):
         if member.id == id_or_name:
             return member
     for member in discord_server_members:
-        if member.get_name().lower() == str(
+        if member.has_user() and member.get_name().lower() == str(
                 id_or_name).lower() or (
                 member.has_user() and member.get_user().display_name == str(id_or_name).lower()):
             return member
