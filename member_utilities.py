@@ -45,7 +45,7 @@ def has_member(id_in):
 
 def check_for_member_updates():
     for member in get_guild().members:
-        if not has_member(member.id):
+        if not has_member(member.id) and not member.bot:
             DiscordServerMember(member.id, 0)
 
 

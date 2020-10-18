@@ -128,7 +128,7 @@ async def send_question():
         last_question_response = random_word
         scrambled = scramble_word(random_word)
         await get_knightbot_channel().send(
-            f"Unscramble the message to receive points! **{scrambled}**")
+            f"Unscramble the word to receive points! **{scrambled}**")
     else:
         random_integer_2 = random.randint(0, 3)
         if random_integer_2 == 0:
@@ -171,10 +171,11 @@ async def process_response(message):
         for member in discord_server_members:
             if member.has_user():
                 user = member.get_user()
-                if user.roles.__contains__(get_pointest_role()) and user.id != top_member_id:
-                    await user.remove_roles(get_pointest_role())
-                elif not user.roles.__contains__(get_pointest_role()) and user.id == top_member_id:
-                    await user.add_roles(get_pointest_role())
+                pointest_role = get_pointest_role()
+                if user.roles.__contains__(pointest_role) and user.id != top_member_id:
+                    await user.remove_roles(pointest_role)
+                elif not user.roles.__contains__(pointest_role) and user.id == top_member_id:
+                    await user.add_roles(pointest_role)
                     await get_knightbot_response_channel().send(f"Congratulations! You are now the "
                                                                 f"POINTEST!")
 

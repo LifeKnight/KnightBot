@@ -5,7 +5,7 @@ import bot_utilities
 from member_utilities import get_by_id_or_name, discord_server_members
 
 command_map = {
-    "social": ["social, socials",],
+    "social": ["social", "socials", "socialmedia"],
     "mods": ["mod", "mods"],
     "resource_packs": ["packs", "resourcepack", "texturepack", "resourcepacks", "texturepacks", "rps", "tps"],
     "profile": ["profile", "pf"],
@@ -30,6 +30,7 @@ async def social_command(channel):
 
 async def mods_command(channel):
     mods = {
+        "Combat Analysis": "https://youtu.be/pyb-IBT3j5M",
         "Bridging Analysis": "https://youtu.be/_AognfACDmg",
         "ChatControl": "https://youtu.be/oPiPtvjkIM0",
         "Bruh-Stal": "https://youtu.be/XpkPnikgM1M"
@@ -42,8 +43,8 @@ async def mods_command(channel):
 
 async def resource_packs_command(channel):
     resource_packs = {
-        "High Resolution Sword": "http://www.mediafire.com/file/8wk87k5ii4sqwry/%25C2%25A78%2521__%25C2%25A77Kiro_"
-                                 "%25C2%25A73Faith_%25C2%25A78Revamp.zip/file",
+        "High Resolution Sword": "http://www.mediafire.com/file/9tb8bzq7ss65a9j/§8!++§7Kiro+§4Faith+§8Revamp+-+("
+                                 "Red+Diamond+Edit).zip/file",
         "16x Swords, 128x Blocks": "http://www.mediafire.com/file/v20bu2xzzgtyzlf/A_Simple_PvP_Experience%2521_"
                                    "%255BRed_Diamond_Edit%255D.zip/file",
         "Default Red Edit": "http://www.mediafire.com/file/teb5n3f78d8orqo/Default_Texture_Pack_%255BRed_Edit%255D"
@@ -91,7 +92,8 @@ async def leaderboard_command(channel):
     while len(top) < 10:
         member_with_most_points = None
         for member in members:
-            if member_with_most_points is None or member.get_points() > member_with_most_points.get_points():
+            if member.get_user() is not None and (
+                    member_with_most_points is None or member.get_points() > member_with_most_points.get_points()):
                 member_with_most_points = member
         top.append(member_with_most_points)
         members.remove(member_with_most_points)
