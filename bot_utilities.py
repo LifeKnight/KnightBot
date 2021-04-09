@@ -49,7 +49,7 @@ def scramble_word(word):
 
 def get_random_number_that_isnt(min, max, previous):
     random_value = random.randint(min, max)
-    if not random_value in previous:
+    if random_value not in previous:
         return random_value
     return get_random_number_that_isnt(min, max, previous)
 

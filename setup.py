@@ -1,9 +1,9 @@
 from distutils.core import setup
 
 setup(
-   name='KnightBot',
-   version='0.1dev',
-   packages=['sololearn',],
-   license='MIT',
-   long_description=open('README.txt').read(),
+    name='KnightBot',
+    version='1.0',
+    packages=['sololearn', ],
+    license='MIT',
+    long_description=open('README.txt').read(),
 )

@@ -1,150 +1,150 @@
 {
-    "time": 1603046753630,
+    "time": 1618003398863,
     "members": [
         {
             "id": 620769183025725480,
             "points": 0,
-            "name": "TokyoInGoosebumps"
+            "name": "None"
         },
         {
             "id": 328347038229987330,
             "points": 0,
-            "name": "Shad"
+            "name": "None"
         },
         {
             "id": 508650617946767370,
             "points": 0,
-            "name": "doog ( Make games)"
+            "name": "None"
         },
         {
             "id": 457685688045797382,
             "points": 0,
-            "name": "Childtortilla"
+            "name": "None"
         },
         {
             "id": 400037436102672386,
             "points": 0,
-            "name": "yeah"
+            "name": "None"
         },
         {
             "id": 651254478133133342,
             "points": 0,
-            "name": "Shadow Grape"
+            "name": "None"
         },
         {
             "id": 435303615016468483,
             "points": 0,
-            "name": "Thopy"
+            "name": "None"
         },
         {
             "id": 345249486823620612,
             "points": 0,
-            "name": "\ud83d\udd78 K\u0335i\u0338t\u0335o\u0338 \ud83c\udf83"
+            "name": "None"
         },
         {
             "id": 419239879071891466,
             "points": 0,
-            "name": "chaseb63062"
+            "name": "None"
         },
         {
             "id": 279737457728159744,
             "points": 0,
-            "name": "Mobstructer"
+            "name": "None"
         },
         {
             "id": 532373678512406539,
             "points": 0,
-            "name": "One Crit Wonder"
+            "name": "None"
         },
         {
             "id": 518513143589109771,
             "points": 0,
-            "name": "Qewer"
+            "name": "None"
         },
         {
             "id": 534461387749982218,
             "points": 0,
-            "name": "Swio"
+            "name": "None"
         },
         {
             "id": 536697159052034048,
             "points": 0,
-            "name": "Krispy"
+            "name": "None"
         },
         {
             "id": 563176443094499340,
             "points": 0,
-            "name": "OOFINATOR2000"
+            "name": "None"
         },
         {
             "id": 484713772552814593,
             "points": 0,
-            "name": "SAd Yoosh"
+            "name": "None"
         },
         {
             "id": 263598192216506368,
             "points": 0,
-            "name": "Yeezy"
+            "name": "None"
         },
         {
             "id": 234103426135359488,
             "points": 0,
-            "name": "Willerhide"
+            "name": "None"
         },
         {
             "id": 342702218790830091,
             "points": 0,
-            "name": "Slendelli"
+            "name": "None"
         },
         {
             "id": 731944494982758447,
             "points": 0,
-            "name": "TheDarkOut"
+            "name": "None"
         },
         {
             "id": 278271319450058752,
             "points": 0,
-            "name": "II"
+            "name": "None"
         },
         {
             "id": 277987172978524161,
             "points": 0,
-            "name": "Wibba"
+            "name": "None"
         },
         {
             "id": 493762653118922753,
             "points": 0,
-            "name": "shaetkngiht"
+            "name": "None"
         },
         {
             "id": 349281526258597889,
             "points": 3,
-            "name": "LifeKnight"
+            "name": "None"
         },
         {
             "id": 384058347126784020,
             "points": 0,
-            "name": "NicO"
+            "name": "None"
         },
         {
             "id": 600226309993529365,
             "points": 0,
-            "name": "Sam Sam"
+            "name": "None"
         },
         {
             "id": 584529415472545950,
             "points": 0,
-            "name": "VivaLaEpic"
+            "name": "None"
         },
         {
             "id": 373837897343696896,
             "points": 0,
-            "name": "TheLemoade"
+            "name": "None"
         },
         {
             "id": 489949296477601793,
             "points": 0,
-            "name": "bleuuski"
+            "name": "None"
         }
     ]
 }

@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 import bot_utilities
 import member_utilities
-from bot_utilities import send_question, get_current_time_millis, process_response
+from bot_utilities import send_question, get_current_time_millis
 from member_utilities import check_for_member_updates, \
     read_members_from_tuple, get_members_as_tuple
 
