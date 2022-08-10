@@ -110,8 +110,9 @@ async def leaderboard_command(channel):
 async def random_streamer_command(channel):
     try:
         await channel.send(embed=await bot_utilities.get_random_stream())
-    except:
+    except Exception as e:
         await channel.send("An error occurred. Please try again.")
+        print(e)
 
 
 async def help_command(channel):

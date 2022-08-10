@@ -1,8 +1,10 @@
 import datetime
+import os
 import random
 import time
 
 import discord
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
 
 import bot_commands
@@ -13,6 +15,9 @@ CLIENT = None
 english_word_list = []
 last_question_time = 0
 last_question_response = None
+
+load_dotenv()
+DEVELOPER_KEY = os.getenv('YOUTUBE_TOKEN')
 
 
 def set_client(client_in):
@@ -55,19 +60,19 @@ def get_random_number_that_isnt(min, max, previous):
 
 
 async def get_random_stream():
-    developer_key = 'AIzaSyA-dBiqrzPhCbkiWQCtWh2T-UYkcil05ds'
+    global DEVELOPER_KEY
     youtube_api_service_name = 'youtube'
     youtube_api_version = 'v3'
 
     youtube = build(youtube_api_service_name, youtube_api_version,
-                    developerKey=developer_key)
+                    developerKey=DEVELOPER_KEY)
 
     search_response = youtube.search().list(
         part="snippet",
         eventType="live",
         maxResults=25,
         order="viewCount",
-        q="hypixel,/p join,/party join",
+        q="hypixel",
         type="video"
     ).execute()
 

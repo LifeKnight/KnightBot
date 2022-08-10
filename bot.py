@@ -19,7 +19,6 @@ CLIENT = discord.Client()
 
 prefix = '/'
 
-
 last_config_read_time = 0
 
 
@@ -68,6 +67,7 @@ async def on_startup():
 
 async def exit_bot():
     await update_configuration_file()
+    print("exiting")
     sys.exit(0)
 
 
